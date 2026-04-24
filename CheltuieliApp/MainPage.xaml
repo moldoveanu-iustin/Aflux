@@ -1,0 +1,41 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CheltuieliApp.MainPage"
+             xmlns:converters="clr-namespace:CheltuieliApp.Converters">
+
+
+    <ContentPage.Resources>
+        <converters:DirectionColorConverter x:Key="DirectionColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+
+        <Button Grid.Row="0"
+                Text="Importă extras PDF"
+                Clicked="OnImportPdfClicked" />
+
+        <Label Grid.Row="1"
+               x:Name="ResultLabel"
+               Text="Niciun extras importat."
+               FontSize="16" />
+
+        <CollectionView Grid.Row="2"
+                        x:Name="TransactionsList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout Padding="8" Spacing="4">
+                        <Label Text="{Binding TransactionDate, StringFormat='Data: {0:dd.MM.yyyy}'}" />
+                        <Label Text="{Binding Direction}" />
+                        <Label Text="{Binding Merchant}" FontAttributes="Bold" />
+                        <Label Text="{Binding Amount, StringFormat='{0:N2} RON'}"
+                       TextColor="{Binding Direction, Converter={StaticResource DirectionColorConverter}}"
+                       FontAttributes="Bold" />
+                        <Label Text="{Binding Description}" FontSize="11" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

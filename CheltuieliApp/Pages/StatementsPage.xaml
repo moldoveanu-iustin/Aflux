@@ -1,0 +1,46 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CheltuieliApp.Pages.StatementsPage"
+             Title="Extrase">
+
+    <Grid Padding="24" RowDefinitions="Auto,*" RowSpacing="16">
+
+        <Label Grid.Row="0"
+               Text="Extrase importate"
+               FontSize="28"
+               FontAttributes="Bold" />
+
+        <CollectionView Grid.Row="1"
+                        x:Name="ImportsList"
+                        SelectionMode="Single"
+                        SelectionChanged="OnImportSelected"
+                        EmptyView="Nu există extrase importate.">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="14"
+                            Margin="0,0,0,12"
+                            StrokeThickness="1">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding Bank}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+
+                            <Label Text="{Binding AccountIban}"
+                                   FontSize="12" />
+
+                            <Label Text="{Binding PeriodStart, StringFormat='De la: {0:dd.MM.yyyy}'}" />
+                            <Label Text="{Binding PeriodEnd, StringFormat='Până la: {0:dd.MM.yyyy}'}" />
+
+                            <Label Text="{Binding TransactionCount, StringFormat='Tranzacții: {0}'}" />
+
+                            <Label Text="{Binding ImportedAt, StringFormat='Importat la: {0:dd.MM.yyyy HH:mm}'}"
+                                   FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

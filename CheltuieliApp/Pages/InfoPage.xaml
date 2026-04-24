@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CheltuieliApp.Pages.InfoPage"
+             Title="Info">
+
+    <VerticalStackLayout Padding="24" Spacing="12">
+        <Label Text="CheltuieliApp"
+               FontSize="28"
+               FontAttributes="Bold" />
+
+        <Label Text="Aplicație pentru importul extraselor bancare și analiza cheltuielilor." />
+
+        <Label Text="Versiune: 1.0.0" />
+
+        <Label Text="Autor: Iustin Eusebiu Moldoveanu" />
+
+        <Label Text="Datele sunt salvate local pe dispozitiv, în SQLite." />
+    </VerticalStackLayout>
+
+</ContentPage>

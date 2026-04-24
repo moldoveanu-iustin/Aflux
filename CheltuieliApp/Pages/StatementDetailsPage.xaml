@@ -1,0 +1,46 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:CheltuieliApp.Converters"
+             x:Class="CheltuieliApp.Pages.StatementDetailsPage"
+             Title="Detalii extras">
+
+    <ContentPage.Resources>
+        <converters:DirectionColorConverter x:Key="DirectionColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*" RowSpacing="10">
+
+        <!-- HEADER -->
+        <VerticalStackLayout Grid.Row="0">
+            <Label Text="{Binding Bank}" FontSize="22" FontAttributes="Bold"/>
+            <Label Text="{Binding Period}" FontSize="14"/>
+        </VerticalStackLayout>
+
+        <!-- DELETE -->
+        <Button Grid.Row="1"
+                Text="Șterge extrasul"
+                BackgroundColor="Red"
+                TextColor="White"
+                Clicked="OnDeleteClicked" />
+
+        <!-- LISTA TRANZACTII -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Transactions}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="10" Margin="0,0,0,8" StrokeThickness="1">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding TransactionDate, StringFormat='{0:dd.MM.yyyy}'}" />
+                            <Label Text="{Binding Merchant}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Amount, StringFormat='{0:N2} RON'}"
+                                   TextColor="{Binding Direction, Converter={StaticResource DirectionColorConverter}}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+</ContentPage>
