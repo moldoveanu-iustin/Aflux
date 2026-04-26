@@ -2,14 +2,277 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CheltuieliApp.Pages.DashboardPage"
-             Title="Dashboard">
+             Title="Dashboard"
+             BackgroundColor="#F5F7FB">
 
-    <Grid Padding="24">
-        <Label Text="Dashboard"
-               FontSize="28"
-               FontAttributes="Bold"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
+    <Grid>
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="14" Spacing="10">
+
+            <!-- Header -->
+            <VerticalStackLayout Spacing="0">
+                <Label Text="Bun venit 👋"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                <Label Text="Privire de ansamblu asupra cheltuielilor tale"
+                       FontSize="12"
+                       TextColor="#6B7280" />
+            </VerticalStackLayout>
+
+            <!-- Month navigation card -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="6"
+                    StrokeShape="RoundRectangle 20">
+
+                <Grid ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="6">
+
+                    <Button Text="‹"
+                            FontSize="14"
+                            WidthRequest="23"
+                            HeightRequest="23"
+                            CornerRadius="23"
+                            BackgroundColor="#EEF2FF"
+                            TextColor="#3F51B5"
+                            Clicked="OnPreviousMonthClicked" />
+
+                    <Label Grid.Column="1"
+                           x:Name="CurrentMonthLabel"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+
+                    <Button Grid.Column="2"
+                            Text="›"
+                            FontSize="14"
+                            WidthRequest="23"
+                            HeightRequest="23"
+                            CornerRadius="23"
+                            BackgroundColor="#EEF2FF"
+                            TextColor="#3F51B5"
+                            Clicked="OnNextMonthClicked" />
+                </Grid>
+            </Border>
+
+            <!-- Summary cards -->
+            <Grid ColumnDefinitions="*,*,*"
+                  ColumnSpacing="10">
+
+                <Border BackgroundColor="#F0FDF4"
+                        StrokeThickness="0"
+                        Padding="14"
+                        StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Venituri"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        <Label x:Name="IncomeLabel"
+                               Text="0.00 RON"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="#16A34A" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1"
+                        BackgroundColor="#FEF2F2"
+                        StrokeThickness="0"
+                        Padding="14"
+                        StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Cheltuieli"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        <Label x:Name="ExpensesLabel"
+                               Text="0.00 RON"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="#DC2626" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="2"
+                        BackgroundColor="#EEF2FF"
+                        StrokeThickness="0"
+                        Padding="14"
+                        StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Tranzacții"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        <Label x:Name="TransactionsCountLabel"
+                               Text="0"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+
+            <!-- Calendar card -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="16"
+                    StrokeShape="RoundRectangle 28">
+
+                <VerticalStackLayout Spacing="14">
+
+                        <Grid ColumnDefinitions="*,Auto"
+                          ColumnSpacing="12">
+
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Acoperire extrase"
+                                          FontSize="16"
+                                          FontAttributes="Bold"
+                                          TextColor="#111827" />
+
+                                <Label Text="Zilele acoperite de extrasele importate"
+                                         FontSize="12"
+                                         TextColor="#6B7280" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="1"
+                                ImageSource="info.png"
+                                WidthRequest="34"
+                                HeightRequest="34"
+                                CornerRadius="17"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                BackgroundColor="#EEF2FF"
+                                TextColor="#3F51B5"
+                                Clicked="OnCalendarInfoClicked" />
+                        </Grid>
+
+                        <!-- Days header -->
+                    <Grid ColumnDefinitions="*,*,*,*,*,*,*"
+                          ColumnSpacing="4">
+                        <Label Text="L" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Ma" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="2" Text="Mi" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="3" Text="J" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="4" Text="V" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="5" Text="S" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                        <Label Grid.Column="6" Text="D" HorizontalTextAlignment="Center" FontSize="12" TextColor="#9CA3AF" FontAttributes="Bold" />
+                    </Grid>
+
+                    <!-- Calendar -->
+                    <Grid x:Name="CalendarGrid"
+                          ColumnDefinitions="*,*,*,*,*,*,*"
+                          RowSpacing="8"
+                          ColumnSpacing="8" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+        <!-- OVERLAY MODAL -->
+        <Grid x:Name="InfoOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000">
+
+            <Border x:Name="InfoBottomSheet"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 28,28,0,0"
+                    Padding="22"
+                    VerticalOptions="End"
+                    HeightRequest="430">
+
+                <VerticalStackLayout Spacing="18">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Legendă calendar"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+
+                        <Button Grid.Column="1"
+                                Text="×"
+                                FontSize="18"
+                                WidthRequest="42"
+                                HeightRequest="42"
+                                CornerRadius="21"
+                                BackgroundColor="#F3F4F6"
+                                TextColor="#111827"
+                                Clicked="OnCloseCalendarInfoClicked" />
+                    </Grid>
+
+                    <Label Text="În calendar poți vedea rapid ce perioade sunt acoperite de extrasele importate și în ce zile există tranzacții."
+                           FontSize="14"
+                           TextColor="#6B7280" />
+
+                    <VerticalStackLayout Spacing="14">
+
+                        <HorizontalStackLayout Spacing="12">
+                            <BoxView WidthRequest="16"
+                                     HeightRequest="16"
+                                     Color="#38BDF8" />
+                            <Label Text="BT — extras importat pentru ziua respectivă"
+                                   TextColor="#374151"
+                                   FontSize="14" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="12">
+                            <BoxView WidthRequest="16"
+                                     HeightRequest="16"
+                                     Color="#EF4444" />
+                            <Label Text="BRD — extras importat pentru ziua respectivă"
+                                   TextColor="#374151"
+                                   FontSize="14" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="12">
+                            <BoxView WidthRequest="16"
+                                     HeightRequest="16"
+                                     Color="#FACC15" />
+                            <Label Text="Raiffeisen — extras importat pentru ziua respectivă"
+                                   TextColor="#374151"
+                                   FontSize="14" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="12">
+                            <Border WidthRequest="16"
+                                    HeightRequest="16"
+                                    BackgroundColor="#F1F5F9"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 5" />
+                            <Label Text="Fundal gri — există tranzacții în acea zi"
+                                   TextColor="#374151"
+                                   FontSize="14" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="12">
+                            <Border WidthRequest="16"
+                                    HeightRequest="16"
+                                    BackgroundColor="Transparent"
+                                    Stroke="#3F51B5"
+                                    StrokeThickness="2"
+                                    StrokeShape="RoundRectangle 5" />
+                            <Label Text="Contur albastru — ziua curentă"
+                                   TextColor="#374151"
+                                   FontSize="14" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
     </Grid>
 
 </ContentPage>

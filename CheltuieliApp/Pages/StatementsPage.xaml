@@ -3,14 +3,32 @@
              x:Class="CheltuieliApp.Pages.StatementsPage"
              Title="Extrase">
 
-    <Grid Padding="24" RowDefinitions="Auto,*" RowSpacing="16">
+    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="16">
 
         <Label Grid.Row="0"
                Text="Extrase importate"
                FontSize="28"
                FontAttributes="Bold" />
 
-        <CollectionView Grid.Row="1"
+        <!--filtre-->
+        <Grid Grid.Row="1"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="12">
+
+            <Picker x:Name="YearPicker"
+            Title="An"
+            ItemDisplayBinding="{Binding Name}"
+            SelectedIndexChanged="OnFiltersChanged" />
+
+            <Picker Grid.Column="1"
+            x:Name="MonthPicker"
+            Title="Lună"
+            ItemDisplayBinding="{Binding Name}"
+            SelectedIndexChanged="OnFiltersChanged" />
+        </Grid>
+
+
+        <CollectionView Grid.Row="2"
                         x:Name="ImportsList"
                         SelectionMode="Single"
                         SelectionChanged="OnImportSelected"

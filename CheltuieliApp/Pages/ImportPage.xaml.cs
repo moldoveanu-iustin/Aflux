@@ -61,10 +61,38 @@ public partial class ImportPage : ContentPage
         if (_currentStatement == null)
             return;
 
+        var validation = await _importService.ValidateImportAsync(_currentStatement);
+
+        if (validation.Status == ImportValidationStatus.FullyCovered)
+        {
+            await DisplayAlertAsync("Import blocat", validation.Message, "OK");
+            return;
+        }
+
+        DateTime? allowedStart = null;
+        DateTime? allowedEnd = null;
+
+        if (validation.Status == ImportValidationStatus.PartiallyCovered)
+        {
+            var confirm = await DisplayAlertAsync(
+                "Suprapunere detectată",
+                validation.Message,
+                "Importă doar zilele noi",
+                "Anulează");
+
+            if (!confirm)
+                return;
+
+            allowedStart = validation.AllowedStart;
+            allowedEnd = validation.AllowedEnd;
+        }
+
         await _importService.SaveStatementAsync(
             _currentStatement,
             _currentFileName,
-            _currentFileHash);
+            _currentFileHash,
+            allowedStart,
+            allowedEnd);
 
         await DisplayAlertAsync("Succes", "Extrasul a fost salvat.", "OK");
 

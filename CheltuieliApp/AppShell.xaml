@@ -5,28 +5,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:CheltuieliApp.Pages"
     Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarBackgroundColor="#FFFFFF"
+    Shell.TabBarForegroundColor="#3F51B5"
+    Shell.TabBarTitleColor="#3F51B5"
+    Shell.TabBarUnselectedColor="#9CA3AF"
     Title="CheltuieliApp">
 
     <TabBar>
 
         <ShellContent
-            Title="Dashboard"
+            Title="Acasă"
+            Icon="dashboard.svg"
             ContentTemplate="{DataTemplate pages:DashboardPage}" />
 
         <ShellContent
             Title="Tranzacții"
+            Icon="transactions.svg"
             ContentTemplate="{DataTemplate pages:TransactionsPage}" />
 
         <ShellContent
             Title="Extrase"
+            Icon="statements.svg"
             ContentTemplate="{DataTemplate pages:StatementsPage}" />
 
         <ShellContent
             Title="Import"
+            Icon="import_icon.svg"
             ContentTemplate="{DataTemplate pages:ImportPage}" />
 
         <ShellContent
             Title="Info"
+            Icon="info.svg"
             ContentTemplate="{DataTemplate pages:InfoPage}" />
 
     </TabBar>
