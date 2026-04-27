@@ -20,6 +20,7 @@ namespace CheltuieliApp
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "cheltuieli.db3");
             builder.Services.AddSingleton(new AppDatabase(dbPath));
             builder.Services.AddSingleton<ImportService>();
+            builder.Services.AddSingleton<CategoryService>();
 
 
 #if DEBUG

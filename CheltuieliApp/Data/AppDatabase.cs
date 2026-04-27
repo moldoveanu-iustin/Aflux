@@ -13,6 +13,8 @@ public class AppDatabase
 
         _db.CreateTableAsync<StatementImportEntity>().Wait();
         _db.CreateTableAsync<TransactionEntity>().Wait();
+        _db.CreateTableAsync<CategoryEntity>().Wait();
+        _db.CreateTableAsync<MerchantRuleEntity>().Wait();
     }
 
     public SQLiteAsyncConnection Db => _db;

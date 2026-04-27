@@ -7,10 +7,12 @@ namespace CheltuieliApp.Services;
 public class ImportService
 {
     private readonly AppDatabase _database;
+    private Dictionary<int, CategoryEntity> _categoriesCache;
 
     public ImportService(AppDatabase database)
     {
         _database = database;
+        _categoriesCache = new Dictionary<int, CategoryEntity>();
     }
 
     public async Task SaveStatementAsync(BankStatementDto dto, string fileName, string fileHash, DateTime? allowedStart = null, DateTime? allowedEnd = null)
@@ -54,7 +56,9 @@ public class ImportService
                 Amount = t.Amount,
                 Direction = t.Direction,
                 Merchant = t.Merchant,
-                Description = t.Description
+                Description = t.Description,
+                CategoryId = t.CategoryId,
+                CategoryName = t.CategoryName,
             };
 
             await _database.Db.InsertAsync(entity);
@@ -221,4 +225,6 @@ public class ImportService
             .OrderBy(x => x.TransactionDate)
             .ToListAsync();
     }
+
+
 }

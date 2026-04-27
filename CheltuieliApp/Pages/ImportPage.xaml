@@ -3,47 +3,269 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:CheltuieliApp.Converters"
              x:Class="CheltuieliApp.Pages.ImportPage"
-             Title="Import">
+             Title="Import"
+             BackgroundColor="#F5F7FB">
 
     <ContentPage.Resources>
         <converters:DirectionColorConverter x:Key="DirectionColorConverter" />
     </ContentPage.Resources>
 
-    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+    <Grid>
 
-        <Button Grid.Row="0"
-                Text="Importă extras PDF"
-                Clicked="OnImportPdfClicked" />
+        <ScrollView>
+            <VerticalStackLayout Padding="14" Spacing="10">
 
-        <Label Grid.Row="1"
-               x:Name="ResultLabel"
-               Text="Niciun extras importat."
-               FontSize="16" />
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="Import extras"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
 
-        <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="16">
-            <Button Grid.Row="2"
-                x:Name="ConfirmImportButton"
-                Text="Confirmă importul"
-                IsVisible="False"
-                Clicked="OnConfirmImportClicked" />
+                    <Label Text="Încarcă un extras PDF și verifică tranzacțiile înainte de salvare"
+                           FontSize="12"
+                           TextColor="#6B7280" />
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="16"
+                        StrokeShape="RoundRectangle 24">
+
+                    <VerticalStackLayout Spacing="12">
+
+                        <Button Text="Importă extras PDF"
+                                HeightRequest="46"
+                                CornerRadius="18"
+                                BackgroundColor="#3F51B5"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                Clicked="OnImportPdfClicked" />
+
+                        <Label x:Name="ResultLabel"
+                               Text="Niciun extras importat."
+                               FontSize="13"
+                               TextColor="#6B7280" />
+
+                        <Button x:Name="ConfirmImportButton"
+                                Text="Confirmă importul"
+                                HeightRequest="46"
+                                CornerRadius="18"
+                                BackgroundColor="#16A34A"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                IsVisible="False"
+                                Clicked="OnConfirmImportClicked" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="16"
+                        StrokeShape="RoundRectangle 28"
+                        IsVisible="{Binding Source={x:Reference TransactionsList}, Path=IsVisible}">
+
+                    <VerticalStackLayout Spacing="14">
+
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Tranzacții"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827" />
+
+                            <Label Text="Verifică fiecare tranzacție și completează categoriile lipsă"
+                                   FontSize="12"
+                                   TextColor="#6B7280" />
+                        </VerticalStackLayout>
+
+                        <CollectionView x:Name="TransactionsList"
+                                        IsVisible="False">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BackgroundColor="#F8FAFC"
+                                            StrokeThickness="0"
+                                            Padding="12"
+                                            Margin="0,0,0,10"
+                                            StrokeShape="RoundRectangle 20">
+
+                                        <VerticalStackLayout Spacing="8">
+
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label Text="{Binding Merchant}"
+                                                           FontSize="14"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#111827"
+                                                           LineBreakMode="TailTruncation" />
+
+                                                    <Label Text="{Binding TransactionDate, StringFormat='{0:dd.MM.yyyy}'}"
+                                                           FontSize="12"
+                                                           TextColor="#6B7280" />
+                                                </VerticalStackLayout>
+
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding Amount, StringFormat='{0:N2} RON'}"
+                                                       TextColor="{Binding Direction, Converter={StaticResource DirectionColorConverter}}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       VerticalOptions="Center" />
+                                            </Grid>
+
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="11"
+                                                   TextColor="#9CA3AF"
+                                                   LineBreakMode="TailTruncation" />
+
+                                            <Grid ColumnDefinitions="*,Auto"
+                                                  ColumnSpacing="10">
+
+                                                <Border BackgroundColor="#EEF2FF"
+                                                        StrokeThickness="0"
+                                                        Padding="10,6"
+                                                        StrokeShape="RoundRectangle 14">
+                                                    <Label Text="{Binding CategoryName, StringFormat='Categorie: {0}'}"
+                                                           FontSize="12"
+                                                           TextColor="#3F51B5" />
+                                                </Border>
+
+                                                <Button Grid.Column="1"
+                                                        Text="Schimbă"
+                                                        HeightRequest="34"
+                                                        CornerRadius="15"
+                                                        Padding="12,0"
+                                                        BackgroundColor="#111827"
+                                                        TextColor="White"
+                                                        FontSize="12"
+                                                        Clicked="OnChangeCategoryClicked" />
+                                            </Grid>
+
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- CATEGORY BOTTOM SHEET -->
+        <Grid x:Name="CategoryOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000">
+
+            <Border x:Name="CategoryBottomSheet"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 28,28,0,0"
+                    Padding="22"
+                    VerticalOptions="End"
+                    HeightRequest="620">
+
+                <Grid RowDefinitions="Auto,Auto,*,Auto"
+                      RowSpacing="14">
+
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="*,Auto">
+                        <Label Text="Alege categoria"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+
+                        <Button Grid.Column="1"
+                                Text="×"
+                                FontSize="18"
+                                WidthRequest="42"
+                                HeightRequest="42"
+                                CornerRadius="21"
+                                BackgroundColor="#F3F4F6"
+                                TextColor="#111827"
+                                Clicked="OnCloseCategorySheetClicked" />
+                    </Grid>
+
+                    <Border Grid.Row="1"
+                            BackgroundColor="#F8FAFC"
+                            StrokeThickness="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 18">
+                        <VerticalStackLayout Spacing="4">
+                            <Label x:Name="SelectedTransactionMerchantLabel"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827" />
+
+                            <Label x:Name="SelectedTransactionAmountLabel"
+                                   FontSize="13"
+                                   FontAttributes="Bold" />
+
+                            <Label x:Name="SelectedTransactionDescriptionLabel"
+                                   FontSize="11"
+                                   TextColor="#6B7280"
+                                   LineBreakMode="TailTruncation" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--aici era blocul cu switch-->
+
+                    <CollectionView Grid.Row="2"
+                                    x:Name="CategoriesList"
+                                    SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="#F8FAFC"
+                                        StrokeThickness="0"
+                                        Padding="14"
+                                        Margin="0,0,0,8"
+                                        StrokeShape="RoundRectangle 18">
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCategoryTapped" />
+                                    </Border.GestureRecognizers>
+
+                                    <Label Text="{Binding Name}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="#111827" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Border Grid.Row="3"
+                    BackgroundColor="#F3F4F6"
+                    StrokeThickness="0"
+                    Padding="12"
+                    StrokeShape="RoundRectangle 18">
+
+                        <VerticalStackLayout Spacing="8">
+
+                            <Grid ColumnDefinitions="*,Auto"
+                            ColumnSpacing="12">
+
+                                <Label Text="Aplică categoria automat pe viitor pentru acest comerciant"
+                                   FontSize="13"
+                                   TextColor="#374151"
+                                   VerticalTextAlignment="Center" />
+
+                                <Switch Grid.Column="1"
+                                x:Name="SaveRuleCheckBox"
+                                IsToggled="True"
+                                OnColor="#3F51B5"
+                                ThumbColor="White" />
+                            </Grid>
+
+                            <Label x:Name="SuggestedKeywordLabel"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
+            </Border>
         </Grid>
 
-        <CollectionView Grid.Row="3"
-                        x:Name="TransactionsList">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <VerticalStackLayout Padding="8" Spacing="4">
-                        <Label Text="{Binding TransactionDate, StringFormat='Data: {0:dd.MM.yyyy}'}" />
-                        <Label Text="{Binding Merchant}" FontAttributes="Bold" />
-                        <Label Text="{Binding Amount, StringFormat='{0:N2} RON'}"
-                               TextColor="{Binding Direction, Converter={StaticResource DirectionColorConverter}}"
-                               FontAttributes="Bold" />
-                        <Label Text="{Binding Description}" FontSize="11" />
-                    </VerticalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
     </Grid>
-
 </ContentPage>

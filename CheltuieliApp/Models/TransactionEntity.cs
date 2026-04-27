@@ -24,4 +24,8 @@ public class TransactionEntity
 
     public string Merchant { get; set; } = "";
     public string Description { get; set; } = "";
+    [Indexed]
+    public int? CategoryId { get; set; }
+
+    public string CategoryName { get; set; } = "";
 }
