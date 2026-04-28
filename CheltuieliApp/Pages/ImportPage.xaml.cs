@@ -235,7 +235,7 @@ public partial class ImportPage : ContentPage
 
         if (SaveRuleCheckBox.IsToggled && !string.IsNullOrWhiteSpace(keyword))
         {
-            await _categoryService.AddMerchantRuleAsync(keyword, category.Id);
+            await _categoryService.AddMerchantRuleAsync(keyword, category.Id, _selectedTransactionForCategory.Bank);
 
             ApplyCategoryToMatchingPreviewTransactions(
                 keyword,

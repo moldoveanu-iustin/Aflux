@@ -15,30 +15,48 @@ public class CategoryService
 
     public async Task EnsureDefaultsAsync()
     {
+        var defaults = new List<CategoryEntity>
+    {
+        new() { Name = "Supermarket", Type = "Expense", ColorHex = "#22C55E", Icon = "cart", IsSystem = true },
+        new() { Name = "Restaurante / Cafenele", Type = "Expense", ColorHex = "#F97316", Icon = "coffee", IsSystem = true },
+        new() { Name = "Cadouri", Type = "Expense", ColorHex = "#F52A2A", Icon = "gift", IsSystem = true },
+        new() { Name = "Transport", Type = "Expense", ColorHex = "#3B82F6", Icon = "car", IsSystem = true },
+        new() { Name = "Sănătate", Type = "Expense", ColorHex = "#EF4444", Icon = "health", IsSystem = true },
+        new() { Name = "Abonamente", Type = "Expense", ColorHex = "#8B5CF6", Icon = "subscription", IsSystem = true },
+        new() { Name = "Shopping", Type = "Expense", ColorHex = "#EC4899", Icon = "shopping", IsSystem = true },
+        new() { Name = "Educație", Type = "Expense", ColorHex = "#6366F1", Icon = "book", IsSystem = true },
+        new() { Name = "Divertisment", Type = "Expense", ColorHex = "#F59E0B", Icon = "game", IsSystem = true },
+        new() { Name = "Investiții", Type = "Expense", ColorHex = "#0F766E", Icon = "chart", IsSystem = true },
+        new() { Name = "Transferuri", Type = "Both", ColorHex = "#64748B", Icon = "transfer", IsSystem = true },
+        new() { Name = "Retrageri numerar", Type = "Expense", ColorHex = "#78716C", Icon = "cash", IsSystem = true },
+        new() { Name = "Venituri", Type = "Income", ColorHex = "#16A34A", Icon = "income", IsSystem = true },
+        new() { Name = "Altele", Type = "Both", ColorHex = "#9CA3AF", Icon = "other", IsSystem = true }
+    };
+
         var existingCategories = await _database.Db.Table<CategoryEntity>().ToListAsync();
 
-        if (!existingCategories.Any())
+        foreach (var category in defaults)
         {
-            var categories = new List<CategoryEntity>
-            {
-                new() { Name = "Supermarket", Type = "Expense", ColorHex = "#22C55E", Icon = "cart" },
-                new() { Name = "Restaurante / Cafenele", Type = "Expense", ColorHex = "#F97316", Icon = "coffee" },
-                new() { Name = "Transport", Type = "Expense", ColorHex = "#3B82F6", Icon = "car" },
-                new() { Name = "Sănătate", Type = "Expense", ColorHex = "#EF4444", Icon = "health" },
-                new() { Name = "Abonamente", Type = "Expense", ColorHex = "#8B5CF6", Icon = "subscription" },
-                new() { Name = "Shopping", Type = "Expense", ColorHex = "#EC4899", Icon = "shopping" },
-                new() { Name = "Educație", Type = "Expense", ColorHex = "#6366F1", Icon = "book" },
-                new() { Name = "Divertisment", Type = "Expense", ColorHex = "#F59E0B", Icon = "game" },
-                new() { Name = "Investiții", Type = "Expense", ColorHex = "#0F766E", Icon = "chart" },
-                new() { Name = "Transferuri", Type = "Both", ColorHex = "#64748B", Icon = "transfer" },
-                new() { Name = "Retrageri numerar", Type = "Expense", ColorHex = "#78716C", Icon = "cash" },
-                new() { Name = "Venituri", Type = "Income", ColorHex = "#16A34A", Icon = "income" },
-                new() { Name = "Bonusuri", Type = "Income", ColorHex = "#84CC16", Icon = "gift" },
-                new() { Name = "Altele", Type = "Both", ColorHex = "#9CA3AF", Icon = "other" }
-            };
+            var existing = existingCategories.FirstOrDefault(x =>
+                x.Name.Equals(category.Name, StringComparison.OrdinalIgnoreCase));
 
-            foreach (var category in categories)
+            if (existing == null)
+            {
                 await _database.Db.InsertAsync(category);
+            }
+            else if (existing.IsDeleted)
+            {
+                // important: nu readucem automat categoriile șterse de user
+                continue;
+            }
+            else
+            {
+                existing.IsSystem = true;
+                existing.Type = category.Type;
+                existing.ColorHex = category.ColorHex;
+                existing.Icon = category.Icon;
+                await _database.Db.UpdateAsync(existing);
+            }
         }
 
         await EnsureDefaultRulesAsync();
@@ -61,71 +79,67 @@ public class CategoryService
         var rules = new List<MerchantRuleEntity>
         {
             // Supermarket
-            new() { Keyword = "AUCHAN", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "LIDL", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "PROFI", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "MEGA IMAGE", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "CARREFOUR", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "KAUFLAND", CategoryId = CategoryId("Supermarket") },
-            new() { Keyword = "TERESY", CategoryId = CategoryId("Supermarket") },
+            new() { Keyword = "AUCHAN", CategoryId = CategoryId("Supermarket"), },
+            new() { Keyword = "LIDL", CategoryId = CategoryId("Supermarket"), Bank = "" },
+            new() { Keyword = "PROFI", CategoryId = CategoryId("Supermarket"), Bank = "" },
+            new() { Keyword = "MEGA IMAGE", CategoryId = CategoryId("Supermarket"), Bank = "" },
+            new() { Keyword = "CARREFOUR", CategoryId = CategoryId("Supermarket"), Bank = "" },
+            new() { Keyword = "KAUFLAND", CategoryId = CategoryId("Supermarket"), Bank = "" },
+            new() { Keyword = "TERESY", CategoryId = CategoryId("Supermarket"), Bank = "" },
 
             // Restaurante / cafenele
-            new() { Keyword = "SISTERS CAFE", CategoryId = CategoryId("Restaurante / Cafenele") },
-            new() { Keyword = "INM CJ IULIUS", CategoryId = CategoryId("Restaurante / Cafenele") },
-            new() { Keyword = "MCDONALD", CategoryId = CategoryId("Restaurante / Cafenele") },
-            new() { Keyword = "KFC", CategoryId = CategoryId("Restaurante / Cafenele") },
-            new() { Keyword = "STARBUCKS", CategoryId = CategoryId("Restaurante / Cafenele") },
+            new() { Keyword = "SISTERS CAFE", CategoryId = CategoryId("Restaurante / Cafenele"), Bank = "" },
+            new() { Keyword = "INM CJ IULIUS", CategoryId = CategoryId("Restaurante / Cafenele"), Bank = "" },
+            new() { Keyword = "MCDONALD", CategoryId = CategoryId("Restaurante / Cafenele"), Bank = "" },
+            new() { Keyword = "KFC", CategoryId = CategoryId("Restaurante / Cafenele"), Bank = "" },
+            new() { Keyword = "STARBUCKS", CategoryId = CategoryId("Restaurante / Cafenele"), Bank = "" },
 
             // Transport
-            new() { Keyword = "BOLT", CategoryId = CategoryId("Transport") },
+            new() { Keyword = "BOLT", CategoryId = CategoryId("Transport"), Bank = "" },
             new() { Keyword = "UBER", CategoryId = CategoryId("Transport") },
-            new() { Keyword = "BILETERIA", CategoryId = CategoryId("Transport") },
-            new() { Keyword = "AUTOGARI", CategoryId = CategoryId("Transport") },
+            new() { Keyword = "BILETERIA", CategoryId = CategoryId("Transport"), Bank = "" },
+            new() { Keyword = "AUTOGARI", CategoryId = CategoryId("Transport"), Bank = "" },
 
             // Sănătate
-            new() { Keyword = "SYNEVO", CategoryId = CategoryId("Sănătate") },
-            new() { Keyword = "REMEDIUM", CategoryId = CategoryId("Sănătate") },
-            new() { Keyword = "FARM", CategoryId = CategoryId("Sănătate") },
-            new() { Keyword = "PHARM", CategoryId = CategoryId("Sănătate") },
+            new() { Keyword = "SYNEVO", CategoryId = CategoryId("Sănătate"), Bank = "" },
+            new() { Keyword = "REMEDIUM", CategoryId = CategoryId("Sănătate"), Bank = "" },
+            new() { Keyword = "FARM", CategoryId = CategoryId("Sănătate"), Bank = "" },
+            new() { Keyword = "PHARM", CategoryId = CategoryId("Sănătate"), Bank = "" },
 
             // Abonamente
-            new() { Keyword = "SPOTIFY", CategoryId = CategoryId("Abonamente") },
-            new() { Keyword = "NETFLIX", CategoryId = CategoryId("Abonamente") },
-            new() { Keyword = "OPENAI", CategoryId = CategoryId("Abonamente") },
-            new() { Keyword = "CHATGPT", CategoryId = CategoryId("Abonamente") },
-            new() { Keyword = "GEOGUESSR", CategoryId = CategoryId("Abonamente") },
+            new() { Keyword = "SPOTIFY", CategoryId = CategoryId("Abonamente"), Bank = "" },
+            new() { Keyword = "NETFLIX", CategoryId = CategoryId("Abonamente"), Bank = "" },
+            new() { Keyword = "OPENAI", CategoryId = CategoryId("Abonamente"), Bank = "" },
+            new() { Keyword = "CHATGPT", CategoryId = CategoryId("Abonamente"), Bank = ""},
+            new() { Keyword = "GEOGUESSR", CategoryId = CategoryId("Abonamente"), Bank = "" },
 
             // Shopping
-            new() { Keyword = "EMAG", CategoryId = CategoryId("Shopping") },
-            new() { Keyword = "FASHION", CategoryId = CategoryId("Shopping") },
-            new() { Keyword = "MI.COM", CategoryId = CategoryId("Shopping") },
+            new() { Keyword = "EMAG", CategoryId = CategoryId("Shopping"), Bank = "" },
+            new() { Keyword = "FASHION", CategoryId = CategoryId("Shopping"), Bank = "" },
+            new() { Keyword = "MI.COM", CategoryId = CategoryId("Shopping"), Bank = "" },
 
             // Divertisment
-            new() { Keyword = "SUPERCELL", CategoryId = CategoryId("Divertisment") },
+            new() { Keyword = "SUPERCELL", CategoryId = CategoryId("Divertisment"), Bank = "" },
 
             // Investiții
-            new() { Keyword = "BT OBLIGATIUNI", CategoryId = CategoryId("Investiții") },
-            new() { Keyword = "BT INDEX ROMANIA", CategoryId = CategoryId("Investiții") },
-            new() { Keyword = "ACHIZITIE UNITATI DE FOND", CategoryId = CategoryId("Investiții") },
+            new() { Keyword = "BT OBLIGATIUNI", CategoryId = CategoryId("Investiții"), Bank = "" },
+            new() { Keyword = "BT INDEX ROMANIA", CategoryId = CategoryId("Investiții"), Bank = "" },
+            new() { Keyword = "ACHIZITIE UNITATI DE FOND", CategoryId = CategoryId("Investiții"), Bank = "" },
 
             // Transferuri
-            new() { Keyword = "TRANSFER INTRE CONTURILE PROPRII", CategoryId = CategoryId("Transferuri") },
-            new() { Keyword = "TRANSFER BT PAY", CategoryId = CategoryId("Transferuri") },
-            new() { Keyword = "P2P BTPAY", CategoryId = CategoryId("Transferuri") },
-            new() { Keyword = "PLATA INSTANT", CategoryId = CategoryId("Transferuri") },
+            new() { Keyword = "TRANSFER INTRE CONTURILE PROPRII", CategoryId = CategoryId("Transferuri"), Bank = "" },
+            new() { Keyword = "TRANSFER BT PAY", CategoryId = CategoryId("Transferuri"), Bank = "" },
+            new() { Keyword = "P2P BTPAY", CategoryId = CategoryId("Transferuri"), Bank = "" },
+            new() { Keyword = "PLATA INSTANT", CategoryId = CategoryId("Transferuri"), Bank = "" },
 
             // Retrageri / numerar
-            new() { Keyword = "RETRAGERE NUMERAR", CategoryId = CategoryId("Retrageri numerar") },
-            new() { Keyword = "RETRAGERI DE NUMERAR", CategoryId = CategoryId("Retrageri numerar") },
+            new() { Keyword = "RETRAGERE NUMERAR", CategoryId = CategoryId("Retrageri numerar"), Bank = "" },
+            new() { Keyword = "RETRAGERI DE NUMERAR", CategoryId = CategoryId("Retrageri numerar"), Bank = "" },
 
             // Venituri
-            new() { Keyword = "UNIVERSITATEA BABES BOLYAI", CategoryId = CategoryId("Venituri") },
-            new() { Keyword = "TRANSFER CREDIT", CategoryId = CategoryId("Venituri") },
-            new() { Keyword = "INCASARE", CategoryId = CategoryId("Venituri") },
-            new() { Keyword = "DEPUNERE NUMERAR", CategoryId = CategoryId("Venituri") },
-
-            // Bonusuri
-            new() { Keyword = "BONUS", CategoryId = CategoryId("Bonusuri") }
+            new() { Keyword = "TRANSFER CREDIT", CategoryId = CategoryId("Venituri"), Bank = "" },
+            new() { Keyword = "INCASARE", CategoryId = CategoryId("Venituri"), Bank = "" },
+            new() { Keyword = "DEPUNERE NUMERAR", CategoryId = CategoryId("Venituri"), Bank = "" },
         };
 
         foreach (var rule in rules)
@@ -136,6 +150,7 @@ public class CategoryService
     {
         return await _database.Db
             .Table<CategoryEntity>()
+            .Where(x => !x.IsDeleted)
             .OrderBy(x => x.Name)
             .ToListAsync();
     }
@@ -154,8 +169,13 @@ public class CategoryService
                 .ToUpperInvariant();
 
             var matchedRule = rules
-                .FirstOrDefault(rule =>
-                    searchableText.Contains(rule.Keyword.ToUpperInvariant()));
+            .FirstOrDefault(rule =>
+                searchableText.Contains(rule.Keyword.ToUpperInvariant()) &&
+                rule.Bank.Equals(transaction.Bank, StringComparison.OrdinalIgnoreCase))
+            ??
+            rules.FirstOrDefault(rule =>
+                searchableText.Contains(rule.Keyword.ToUpperInvariant()) &&
+                string.IsNullOrWhiteSpace(rule.Bank));
 
             if (matchedRule == null)
             {
@@ -174,17 +194,18 @@ public class CategoryService
         }
     }
 
-    public async Task AddMerchantRuleAsync(string keyword, int categoryId, string bank = "")
+    public async Task AddMerchantRuleAsync(string keyword, int categoryId, string bank)
     {
         keyword = keyword.Trim().ToUpperInvariant();
+        bank = bank.Trim();
 
-        if (string.IsNullOrWhiteSpace(keyword))
+        if (string.IsNullOrWhiteSpace(keyword) || string.IsNullOrWhiteSpace(bank))
             return;
 
         var existing = await _database.Db.Table<MerchantRuleEntity>()
             .FirstOrDefaultAsync(x =>
                 x.Keyword.ToUpper() == keyword &&
-                x.Bank == bank);
+                x.Bank.ToUpper() == bank.ToUpper());
 
         if (existing != null)
             return;
@@ -195,5 +216,65 @@ public class CategoryService
             CategoryId = categoryId,
             Bank = bank
         });
+    }
+    public async Task AddCategoryAsync(string name, string type, string colorHex = "#3F51B5")
+    {
+        name = name.Trim();
+
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        var existing = await _database.Db.Table<CategoryEntity>()
+            .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+
+        if (existing != null)
+        {
+            if (existing.IsDeleted)
+            {
+                existing.IsDeleted = false;
+                existing.Type = type;
+                existing.ColorHex = colorHex;
+
+                await _database.Db.UpdateAsync(existing);
+            }
+
+            return;
+        }
+
+        await _database.Db.InsertAsync(new CategoryEntity
+        {
+            Name = name,
+            Type = type,
+            ColorHex = colorHex,
+            Icon = "",
+            IsSystem = false,
+            IsDeleted = false
+        });
+    }
+    public async Task DeleteCategoryAsync(int categoryId)
+    {
+        var category = await _database.Db.Table<CategoryEntity>()
+            .FirstOrDefaultAsync(x => x.Id == categoryId);
+
+        if (category == null)
+            return;
+
+        category.IsDeleted = true;
+        await _database.Db.UpdateAsync(category);
+
+        var rules = await _database.Db.Table<MerchantRuleEntity>()
+            .Where(x => x.CategoryId == categoryId)
+            .ToListAsync();
+
+        foreach (var rule in rules)
+            await _database.Db.DeleteAsync(rule);
+    }
+    public async Task<bool> IsCategoryUsedAsync(int categoryId)
+    {
+        var count = await _database.Db.Table<TransactionEntity>()
+            .Where(x => x.CategoryId == categoryId)
+            .CountAsync();
+
+        return count > 0;
     }
 }

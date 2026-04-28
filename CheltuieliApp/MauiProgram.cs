@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using CheltuieliApp.Data;
+﻿using CheltuieliApp.Data;
+using CheltuieliApp.Pages;
 using CheltuieliApp.Services;
+using Microsoft.Extensions.Logging;
 
 namespace CheltuieliApp
 {
@@ -21,7 +22,7 @@ namespace CheltuieliApp
             builder.Services.AddSingleton(new AppDatabase(dbPath));
             builder.Services.AddSingleton<ImportService>();
             builder.Services.AddSingleton<CategoryService>();
-
+            builder.Services.AddTransient<CategoriesPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

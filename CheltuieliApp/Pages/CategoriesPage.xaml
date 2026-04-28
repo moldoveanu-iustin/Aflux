@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CheltuieliApp.Pages.CategoriesPage"
+             Title="Categorii"
+             BackgroundColor="#F5F7FB">
+
+    <Grid>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="14" Spacing="10">
+
+                <!--header-->
+                <HorizontalStackLayout Spacing="10">
+
+                    <Button Text="‹"
+                    WidthRequest="36"
+                    HeightRequest="36"
+                    CornerRadius="18"
+                    BackgroundColor="#EEF2FF"
+                    TextColor="#3F51B5"
+                    FontSize="22"
+                    Padding="0"
+                    Clicked="OnBackClicked" />
+
+                    <VerticalStackLayout Spacing="0">
+                        <Label Text="Categorii"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                        <Label Text="Gestionează categoriile folosite pentru tranzacții"
+                       FontSize="12"
+                       TextColor="#6B7280" />
+                    </VerticalStackLayout>
+
+                </HorizontalStackLayout>
+
+                <Button Text="Adaugă categorie"
+                        HeightRequest="46"
+                        CornerRadius="18"
+                        BackgroundColor="#3F51B5"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnAddCategoryClicked" />
+
+                <Label x:Name="LoadingCategoriesLabel"
+                   Text="Se încarcă categoriile..."
+                   FontSize="13"
+                   TextColor="#6B7280"
+                   IsVisible="False" />
+                
+                <CollectionView x:Name="CategoriesList">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="24"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Spacing="8">
+                            <Label Text="Nu există categorii."
+                   FontSize="14"
+                   TextColor="#111827"
+                   HorizontalTextAlignment="Center" />
+
+                            <Label Text="Adaugă prima categorie pentru a începe."
+                   FontSize="12"
+                   TextColor="#6B7280"
+                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <!-- ItemTemplate rămâne aici -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="14"
+                    Margin="0,0,0,10"
+                    StrokeShape="RoundRectangle 22">
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="12">
+
+                                    <Border WidthRequest="14"
+                            HeightRequest="14"
+                            BackgroundColor="{Binding ColorHex}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 4"
+                            VerticalOptions="Center" />
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                         Spacing="2">
+                                        <Label Text="{Binding Name}"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+
+                                        <Label Text="{Binding TypeDisplay}"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+                                    </VerticalStackLayout>
+
+                                    <Button Grid.Column="2"
+                            Text="Șterge"
+                            FontSize="12"
+                            Padding="10,0"
+                            HeightRequest="34"
+                            CornerRadius="15"
+                            BackgroundColor="#FEF2F2"
+                            TextColor="#DC2626"
+                            Clicked="OnDeleteCategoryClicked" />
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid x:Name="AddCategoryOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000">
+
+            <Border x:Name="AddCategoryBottomSheet"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 28,28,0,0"
+                    Padding="22"
+                    VerticalOptions="End"
+                    HeightRequest="640">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Categorie nouă"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+
+                        <Button Grid.Column="1"
+                                Text="×"
+                                FontSize="18"
+                                WidthRequest="42"
+                                HeightRequest="42"
+                                CornerRadius="21"
+                                BackgroundColor="#F3F4F6"
+                                TextColor="#111827"
+                                Clicked="OnCloseAddCategoryClicked" />
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nume categorie"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        <Entry x:Name="CategoryNameEntry"
+                           Placeholder="Ex: Haine, Vacanțe, Cadouri"
+                           BackgroundColor="#F8FAFC"
+                           TextColor="#111827"
+                           HeightRequest="44" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Tip categorie"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+
+                            <Button x:Name="ExpenseTypeButton"
+                            Text="Cheltuială"
+                            HeightRequest="38"
+                            CornerRadius="14"
+                            FontSize="12"
+                            Clicked="OnTypeSelected"
+                            CommandParameter="Expense" />
+
+                            <Button x:Name="IncomeTypeButton"
+                            Grid.Column="1"
+                            Text="Venit"
+                            HeightRequest="38"
+                            CornerRadius="14"
+                            FontSize="12"
+                            Clicked="OnTypeSelected"
+                            CommandParameter="Income" />
+
+                            <Button x:Name="BothTypeButton"
+                            Grid.Column="2"
+                            Text="Ambele"
+                            HeightRequest="38"
+                            CornerRadius="14"
+                            FontSize="12"
+                            Clicked="OnTypeSelected"
+                            CommandParameter="Both" />
+
+                        </Grid>
+
+                        <Label Text="Alege culoare"
+                           FontSize="12"
+                           TextColor="#6B7280" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
+
+                        <Border x:Name="ColorBlue" BackgroundColor="#3F51B5" HeightRequest="38" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorTapped" CommandParameter="#3F51B5" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border x:Name="ColorGreen" Grid.Column="1" BackgroundColor="#22C55E" HeightRequest="38" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorTapped" CommandParameter="#22C55E" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border x:Name="ColorRed" Grid.Column="2" BackgroundColor="#EF4444" HeightRequest="38" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorTapped" CommandParameter="#EF4444" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border x:Name="ColorOrange" Grid.Column="3" BackgroundColor="#F59E0B" HeightRequest="38" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorTapped" CommandParameter="#F59E0B" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border x:Name="ColorPurple" Grid.Column="4" BackgroundColor="#8B5CF6" HeightRequest="38" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorTapped" CommandParameter="#8B5CF6" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                    </Grid>
+
+                    <Button Text="Salvează categoria"
+                            HeightRequest="46"
+                            CornerRadius="18"
+                            BackgroundColor="#16A34A"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Clicked="OnSaveCategoryClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

@@ -35,9 +35,9 @@
             ContentTemplate="{DataTemplate pages:ImportPage}" />
 
         <ShellContent
-            Title="Info"
-            Icon="info.svg"
-            ContentTemplate="{DataTemplate pages:InfoPage}" />
+        Title="Mai multe"
+        Icon="info.svg"
+        ContentTemplate="{DataTemplate pages:MorePage}" />
 
     </TabBar>
 

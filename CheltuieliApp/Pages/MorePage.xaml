@@ -1,0 +1,110 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CheltuieliApp.Pages.MorePage"
+             Title="Mai mult"
+             BackgroundColor="#F5F7FB">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="14" Spacing="12">
+
+            <VerticalStackLayout Spacing="0">
+                <Label Text="Mai mult"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                <Label Text="Setări, categorii și informații despre aplicație"
+                       FontSize="12"
+                       TextColor="#6B7280" />
+            </VerticalStackLayout>
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="14"
+                    StrokeShape="RoundRectangle 24">
+                <VerticalStackLayout Spacing="12">
+
+                    <Border BackgroundColor="#F8FAFC"
+                            StrokeThickness="0"
+                            Padding="14"
+                            StrokeShape="RoundRectangle 18">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriesTapped" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Categorii"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                <Label Text="Gestionează categoriile pentru tranzacții"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+                                   Text="›"
+                                   FontSize="24"
+                                   TextColor="#9CA3AF"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border BackgroundColor="#F8FAFC"
+                            StrokeThickness="0"
+                            Padding="14"
+                            StrokeShape="RoundRectangle 18">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnDataProcessingTapped" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Procesarea datelor"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                <Label Text="Află unde sunt stocate datele tale"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+                                   Text="›"
+                                   FontSize="24"
+                                   TextColor="#9CA3AF"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border BackgroundColor="#F8FAFC"
+                            StrokeThickness="0"
+                            Padding="14"
+                            StrokeShape="RoundRectangle 18">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnInfoTapped" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Info aplicație"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                <Label Text="Versiune, autor și detalii aplicație"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+                                   Text="›"
+                                   FontSize="24"
+                                   TextColor="#9CA3AF"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
