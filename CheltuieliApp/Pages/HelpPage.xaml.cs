@@ -1,8 +1,8 @@
 namespace CheltuieliApp.Pages;
 
-public partial class InfoPage : ContentPage
+public partial class HelpPage : ContentPage
 {
-    public InfoPage()
+    public HelpPage()
     {
         InitializeComponent();
     }

@@ -23,6 +23,10 @@ namespace CheltuieliApp
             builder.Services.AddSingleton<ImportService>();
             builder.Services.AddSingleton<CategoryService>();
             builder.Services.AddTransient<CategoriesPage>();
+            builder.Services.AddTransient<TransactionsPage>();
+            builder.Services.AddSingleton<BackupService>();
+            builder.Services.AddTransient<BackupPage>();
+            builder.Services.AddTransient<HelpPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

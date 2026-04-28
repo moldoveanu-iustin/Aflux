@@ -46,15 +46,31 @@
                                FontSize="13"
                                TextColor="#6B7280" />
 
-                        <Button x:Name="ConfirmImportButton"
-                                Text="Confirmă importul"
-                                HeightRequest="46"
-                                CornerRadius="18"
-                                BackgroundColor="#16A34A"
-                                TextColor="White"
-                                FontAttributes="Bold"
-                                IsVisible="False"
-                                Clicked="OnConfirmImportClicked" />
+                        <!--butoane pentru confirmare sau anulare--> 
+                        <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="10"
+                          IsVisible="False"
+                          x:Name="ImportActionsGrid">
+
+                            <Button x:Name="CancelImportButton"
+                            Text="Renunță"
+                            HeightRequest="46"
+                            CornerRadius="18"
+                            BackgroundColor="#F3F4F6"
+                            TextColor="#374151"
+                            FontAttributes="Bold"
+                            Clicked="OnCancelImportClicked" />
+
+                            <Button Grid.Column="1"
+                            x:Name="ConfirmImportButton"
+                            Text="Confirmă importul"
+                            HeightRequest="46"
+                            CornerRadius="18"
+                            BackgroundColor="#16A34A"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Clicked="OnConfirmImportClicked" />
+                        </Grid>
 
                     </VerticalStackLayout>
                 </Border>
@@ -264,6 +280,41 @@
                     </Border>
 
                 </Grid>
+            </Border>
+        </Grid>
+
+        <!--OVERLAY DE LOADING-->
+        <Grid x:Name="ImportLoadingOverlay"
+      IsVisible="False"
+      BackgroundColor="#66000000">
+
+            <Border BackgroundColor="White"
+            StrokeThickness="0"
+            Padding="20"
+            StrokeShape="RoundRectangle 24"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="12"
+                             HorizontalOptions="Center">
+
+                    <ActivityIndicator IsRunning="True"
+                               Color="#3F51B5"
+                               WidthRequest="36"
+                               HeightRequest="36" />
+
+                    <Label Text="Se aplică categoria..."
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#111827"
+                   HorizontalTextAlignment="Center" />
+
+                    <Label Text="Actualizăm tranzacțiile similare."
+                   FontSize="12"
+                   TextColor="#6B7280"
+                   HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
             </Border>
         </Grid>
 

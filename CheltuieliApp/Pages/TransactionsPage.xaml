@@ -1,15 +1,423 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:CheltuieliApp.Converters"
              x:Class="CheltuieliApp.Pages.TransactionsPage"
-             Title="Tranzacții">
+             Title="Tranzacții"
+             BackgroundColor="#F5F7FB">
 
-    <Grid Padding="24">
-        <Label Text="Tranzacții"
-               FontSize="28"
-               FontAttributes="Bold"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
+    <ContentPage.Resources>
+        <converters:DirectionColorConverter x:Key="DirectionColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="14" Spacing="10">
+
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="Tranzacții"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Label Text="Caută și filtrează toate tranzacțiile salvate"
+                           FontSize="12"
+                           TextColor="#6B7280" />
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="14"
+                        StrokeShape="RoundRectangle 24">
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Entry x:Name="SearchEntry"
+                               Placeholder="Caută comerciant sau descriere..."
+                               BackgroundColor="#F8FAFC"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               TextChanged="OnSearchChanged" />
+
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="10">
+
+                            <Border BackgroundColor="#F8FAFC"
+                                    StrokeThickness="0"
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 16">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnYearTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label x:Name="SelectedYearLabel"
+                                           Text="Toți anii"
+                                           FontSize="13"
+                                           TextColor="#111827" />
+                                    <Label Grid.Column="1"
+                                           Text="⌄"
+                                           FontSize="16"
+                                           TextColor="#6B7280" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    BackgroundColor="#F8FAFC"
+                                    StrokeThickness="0"
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 16">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnMonthTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label x:Name="SelectedMonthLabel"
+                                           Text="Toate lunile"
+                                           FontSize="13"
+                                           TextColor="#111827" />
+                                    <Label Grid.Column="1"
+                                           Text="⌄"
+                                           FontSize="16"
+                                           TextColor="#6B7280" />
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="10">
+
+                            <Border BackgroundColor="#F8FAFC"
+                                    StrokeThickness="0"
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 16">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTypeTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label x:Name="SelectedTypeLabel"
+                                           Text="Toate tipurile"
+                                           FontSize="13"
+                                           TextColor="#111827" />
+                                    <Label Grid.Column="1"
+                                           Text="⌄"
+                                           FontSize="16"
+                                           TextColor="#6B7280" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    BackgroundColor="#F8FAFC"
+                                    StrokeThickness="0"
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 16">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCategoryTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label x:Name="SelectedCategoryLabel"
+                                           Text="Toate categoriile"
+                                           FontSize="13"
+                                           TextColor="#111827"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Grid.Column="1"
+                                           Text="⌄"
+                                           FontSize="16"
+                                           TextColor="#6B7280" />
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                        <Border BackgroundColor="#F8FAFC"
+                                StrokeThickness="0"
+                                Padding="12,8"
+                                StrokeShape="RoundRectangle 16">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSortTapped" />
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label x:Name="SelectedSortLabel"
+                                       Text="Cele mai noi"
+                                       FontSize="13"
+                                       TextColor="#111827" />
+                                <Label Grid.Column="1"
+                                       Text="⌄"
+                                       FontSize="16"
+                                       TextColor="#6B7280" />
+                            </Grid>
+                        </Border>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,*,*"
+                      ColumnSpacing="10">
+
+                    <Border BackgroundColor="#F0FDF4"
+                            StrokeThickness="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Venituri"
+                                   FontSize="11"
+                                   TextColor="#6B7280" />
+                            <Label x:Name="IncomeLabel"
+                                   Text="0 RON"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#16A34A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            BackgroundColor="#FEF2F2"
+                            StrokeThickness="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Cheltuieli"
+                                   FontSize="11"
+                                   TextColor="#6B7280" />
+                            <Label x:Name="ExpensesLabel"
+                                   Text="0 RON"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#DC2626" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Column="2"
+                            BackgroundColor="#EEF2FF"
+                            StrokeThickness="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Afișate"
+                                   FontSize="11"
+                                   TextColor="#6B7280" />
+                            <Label x:Name="CountLabel"
+                                   Text="0"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
+
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="14"
+                        StrokeShape="RoundRectangle 28">
+
+                    <VerticalStackLayout Spacing="12">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Lista tranzacțiilor"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+
+                                <Label Text="Rezultatele filtrate după criteriile alese"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Label x:Name="LoadingTransactionsLabel"
+                               Text="Se încarcă tranzacțiile..."
+                               FontSize="13"
+                               TextColor="#6B7280"
+                               IsVisible="False" />
+
+                        <CollectionView x:Name="TransactionsList">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout Padding="24"
+                                                     Spacing="8"
+                                                     HorizontalOptions="Center">
+                                    <Label Text="Nu există tranzacții."
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="#111827"
+                                           HorizontalTextAlignment="Center" />
+
+                                    <Label Text="Schimbă filtrele sau importă un extras."
+                                           FontSize="12"
+                                           TextColor="#6B7280"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BackgroundColor="#F8FAFC"
+                                            StrokeThickness="0"
+                                            Padding="12"
+                                            Margin="0,0,0,10"
+                                            StrokeShape="RoundRectangle 20">
+
+                                        <VerticalStackLayout Spacing="8">
+
+                                            <Grid ColumnDefinitions="*,Auto"
+                                                  ColumnSpacing="10">
+
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label Text="{Binding Merchant}"
+                                                           FontSize="14"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#111827"
+                                                           LineBreakMode="TailTruncation" />
+
+                                                    <Label Text="{Binding TransactionDate, StringFormat='{0:dd.MM.yyyy}'}"
+                                                           FontSize="12"
+                                                           TextColor="#6B7280" />
+                                                </VerticalStackLayout>
+
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding Amount, StringFormat='{0:N2} RON'}"
+                                                       TextColor="{Binding Direction, Converter={StaticResource DirectionColorConverter}}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold" />
+                                            </Grid>
+
+                                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                                  ColumnSpacing="8">
+
+                                                <Border BackgroundColor="#EEF2FF"
+                                                        StrokeThickness="0"
+                                                        Padding="10,5"
+                                                        StrokeShape="RoundRectangle 14">
+                                                    <Label Text="{Binding CategoryName}"
+                                                           FontSize="12"
+                                                           TextColor="#3F51B5" />
+                                                </Border>
+
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding Bank}"
+                                                       FontSize="11"
+                                                       TextColor="#9CA3AF"
+                                                       VerticalTextAlignment="Center" />
+
+                                                <Label Grid.Column="2"
+                                                       Text="{Binding Direction}"
+                                                       FontSize="11"
+                                                       TextColor="#9CA3AF" />
+                                            </Grid>
+
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="11"
+                                                   TextColor="#9CA3AF"
+                                                   LineBreakMode="TailTruncation" />
+
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid x:Name="FilterOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000">
+
+            <Border x:Name="FilterBottomSheet"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 28,28,0,0"
+                    Padding="20"
+                    VerticalOptions="End"
+                    HeightRequest="430">
+
+                <Grid RowDefinitions="Auto,*"
+                      RowSpacing="12">
+
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="*,Auto">
+
+                        <Label x:Name="FilterTitleLabel"
+                               Text="Selectează"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#111827"
+                               VerticalTextAlignment="Center" />
+
+                        <Button Grid.Column="1"
+                                Text="×"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                CornerRadius="20"
+                                BackgroundColor="#F3F4F6"
+                                TextColor="#111827"
+                                Clicked="OnCloseFilterClicked" />
+                    </Grid>
+
+                    <CollectionView Grid.Row="1"
+                                    x:Name="FilterList"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="12"
+                                        Margin="0,0,0,8"
+                                        BackgroundColor="#F8FAFC"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 16">
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnFilterSelected" />
+                                    </Border.GestureRecognizers>
+
+                                    <Label Text="{Binding Name}"
+                                           FontSize="14"
+                                           TextColor="#111827" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="FilterLoadingOverlay"
+      IsVisible="False"
+      BackgroundColor="#66000000">
+
+            <Border BackgroundColor="White"
+            StrokeThickness="0"
+            Padding="20"
+            StrokeShape="RoundRectangle 24"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="12"
+                             HorizontalOptions="Center">
+
+                    <ActivityIndicator IsRunning="True"
+                               Color="#3F51B5"
+                               WidthRequest="36"
+                               HeightRequest="36" />
+
+                    <Label Text="Se aplică filtrele..."
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#111827"
+                   HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
     </Grid>
-
 </ContentPage>

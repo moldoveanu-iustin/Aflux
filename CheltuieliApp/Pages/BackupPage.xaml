@@ -1,83 +1,80 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CheltuieliApp.Pages.DataProcessingPage"
-             Title="Procesarea datelor"
+             x:Class="CheltuieliApp.Pages.BackupPage"
+             Title="Backup"
              BackgroundColor="#F5F7FB">
 
     <ScrollView>
         <VerticalStackLayout Padding="14" Spacing="12">
 
             <HorizontalStackLayout Spacing="10">
-
                 <Border WidthRequest="36"
                         HeightRequest="36"
                         StrokeThickness="0"
                         BackgroundColor="#EEF2FF"
                         StrokeShape="RoundRectangle 18">
-
                     <Label Text="‹"
                            FontSize="24"
                            TextColor="#3F51B5"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center" />
-
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBackTapped" />
                     </Border.GestureRecognizers>
                 </Border>
 
                 <VerticalStackLayout Spacing="0">
-                    <Label Text="Procesarea datelor"
+                    <Label Text="Backup și restaurare"
                            FontSize="18"
                            FontAttributes="Bold"
                            TextColor="#111827" />
-
-                    <Label Text="Cum sunt folosite datele în Aflux"
+                    <Label Text="Exportă sau importă datele aplicației"
                            FontSize="12"
                            TextColor="#6B7280" />
                 </VerticalStackLayout>
-
             </HorizontalStackLayout>
 
             <Border BackgroundColor="White"
                     StrokeThickness="0"
                     Padding="18"
                     StrokeShape="RoundRectangle 28">
-
-                <VerticalStackLayout Spacing="16">
-
-                    <Label Text="Datele rămân pe dispozitiv"
-                           FontSize="20"
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Export backup"
+                           FontSize="18"
                            FontAttributes="Bold"
                            TextColor="#111827" />
-
-                    <Label Text="Aflux procesează extrasele local, pe telefonul tău. Tranzacțiile extrase sunt salvate într-o bază de date locală a aplicației."
+                    <Label Text="Creează un fișier JSON cu extrasele, tranzacțiile, categoriile și regulile tale."
                            FontSize="14"
                            TextColor="#374151" />
+                    <Button Text="Exportă datele"
+                            HeightRequest="46"
+                            CornerRadius="18"
+                            BackgroundColor="#3F51B5"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Clicked="OnExportClicked" />
+                </VerticalStackLayout>
+            </Border>
 
-                    <Border BackgroundColor="#EEF2FF"
-                            StrokeThickness="0"
-                            Padding="14"
-                            StrokeShape="RoundRectangle 20">
-                        <Label Text="Administratorul aplicației nu primește, nu vede și nu stochează extrasele tale sau tranzacțiile tale."
-                               FontSize="13"
-                               TextColor="#3F51B5" />
-                    </Border>
-
-                    <Label Text="Responsabilitatea datelor"
-                           FontSize="16"
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="18"
+                    StrokeShape="RoundRectangle 28">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Import backup"
+                           FontSize="18"
                            FontAttributes="Bold"
                            TextColor="#111827" />
-
-                    <Label Text="Datele sunt păstrate în memoria aplicației de pe dispozitiv. Dacă ștergi aplicația sau datele aplicației, informațiile salvate pot fi pierdute."
+                    <Label Text="Alege un fișier JSON exportat anterior. Poți înlocui datele existente sau le poți adăuga peste cele actuale."
                            FontSize="14"
                            TextColor="#374151" />
-
-                    <Label Text="Recomandare: păstrează în siguranță extrasele originale și folosește opțiunile de backup atunci când vor fi disponibile."
-                           FontSize="13"
-                           TextColor="#6B7280" />
-
+                    <Button Text="Importă backup"
+                            HeightRequest="46"
+                            CornerRadius="18"
+                            BackgroundColor="#16A34A"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Clicked="OnImportClicked" />
                 </VerticalStackLayout>
             </Border>
 

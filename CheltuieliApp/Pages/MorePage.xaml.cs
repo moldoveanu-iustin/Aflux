@@ -23,8 +23,18 @@ public partial class MorePage : ContentPage
         await Navigation.PushAsync(new DataProcessingPage());
     }
 
+    private async void OnHelpTapped(object sender, TappedEventArgs e)
+    {
+        await Navigation.PushAsync(new HelpPage());
+    }
+
     private async void OnInfoTapped(object sender, TappedEventArgs e)
     {
         await Navigation.PushAsync(new InfoPage());
+    }
+    private async void OnBackupTapped(object sender, TappedEventArgs e)
+    {
+        var page = _serviceProvider.GetRequiredService<BackupPage>();
+        await Navigation.PushAsync(page);
     }
 }

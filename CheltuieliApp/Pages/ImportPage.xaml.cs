@@ -37,9 +37,11 @@ public partial class ImportPage : ContentPage
             if (file == null)
                 return;
 
+            ResetImportPreview();
+
             ResultLabel.Text = "Se încarcă extrasul...";
-            ConfirmImportButton.IsVisible = false;
-            TransactionsList.ItemsSource = null;
+            ImportActionsGrid.IsVisible = false;
+            TransactionsList.IsVisible = false;
 
             await using var stream = await file.OpenReadAsync();
 
@@ -73,12 +75,38 @@ public partial class ImportPage : ContentPage
 
             TransactionsList.ItemsSource = statement.Transactions;
             TransactionsList.IsVisible = true;
-            ConfirmImportButton.IsVisible = true;
+            ImportActionsGrid.IsVisible = statement.Transactions.Any();
         }
         catch (Exception ex)
         {
             await DisplayAlertAsync("Eroare", ex.Message, "OK");
         }
+    }
+    private async void OnCancelImportClicked(object sender, EventArgs e)
+    {
+        var confirm = await DisplayAlertAsync(
+            "Renunțare import",
+            "Sigur vrei să renunți la extrasul curent? Tranzacțiile nu vor fi salvate.",
+            "Da, renunță",
+            "Anulează");
+
+        if (!confirm)
+            return;
+
+        ResetImportPreview();
+    }
+    private void ResetImportPreview()
+    {
+        _currentStatement = null;
+        _currentFileName = "";
+        _currentFileHash = "";
+
+        ResultLabel.Text = "Niciun extras importat.";
+
+        TransactionsList.ItemsSource = null;
+        TransactionsList.IsVisible = false;
+
+        ImportActionsGrid.IsVisible = false;
     }
     private async void OnConfirmImportClicked(object sender, EventArgs e)
     {
@@ -90,6 +118,7 @@ public partial class ImportPage : ContentPage
         if (validation.Status == ImportValidationStatus.FullyCovered)
         {
             await DisplayAlertAsync("Import blocat", validation.Message, "OK");
+            ResetImportPreview();
             return;
         }
 
@@ -105,7 +134,10 @@ public partial class ImportPage : ContentPage
                 "Anulează");
 
             if (!confirm)
+            {
+                ResetImportPreview();
                 return;
+            }
 
             allowedStart = validation.AllowedStart;
             allowedEnd = validation.AllowedEnd;
@@ -114,7 +146,6 @@ public partial class ImportPage : ContentPage
         if (_currentStatement.Transactions.Any(x => x.CategoryId == null))
         {
             await DisplayAlertAsync("Categorii lipsă", "Există tranzacții fără categorie. Completează toate categoriile înainte de salvare.", "OK");
-
             return;
         }
 
@@ -122,7 +153,7 @@ public partial class ImportPage : ContentPage
 
         await DisplayAlertAsync("Succes", "Extrasul a fost salvat.", "OK");
 
-        ConfirmImportButton.IsVisible = false;
+        ResetImportPreview();
     }
     private void ApplyCategoryToMatchingPreviewTransactions(string keyword, int categoryId, string categoryName)
     {
@@ -209,22 +240,42 @@ public partial class ImportPage : ContentPage
         await CloseCategorySheetAsync();
     }
 
+    private bool _isApplyingCategory;
+
     private async void OnCategoryTapped(object sender, TappedEventArgs e)
     {
+        if (_isApplyingCategory)
+            return;
+
         if (sender is not Border border)
             return;
 
         if (border.BindingContext is not CategoryEntity category)
             return;
 
+        _isApplyingCategory = true;
+
         border.BackgroundColor = Color.FromArgb("#EEF2FF");
         border.Stroke = Color.FromArgb("#3F51B5");
         border.StrokeThickness = 1;
 
-        await border.ScaleTo(0.97, 70);
-        await border.ScaleTo(1, 90);
+        await border.ScaleTo(0.97, 60);
+        await border.ScaleTo(1, 80);
 
-        await ApplySelectedCategoryAsync(category);
+        await CloseCategorySheetAsync();
+
+        ImportLoadingOverlay.IsVisible = true;
+
+        try
+        {
+            await Task.Delay(80); // lasă UI-ul să afișeze loader-ul
+            await ApplySelectedCategoryAsync(category);
+        }
+        finally
+        {
+            ImportLoadingOverlay.IsVisible = false;
+            _isApplyingCategory = false;
+        }
     }
     private async Task ApplySelectedCategoryAsync(CategoryEntity category)
     {
@@ -235,12 +286,15 @@ public partial class ImportPage : ContentPage
 
         if (SaveRuleCheckBox.IsToggled && !string.IsNullOrWhiteSpace(keyword))
         {
-            await _categoryService.AddMerchantRuleAsync(keyword, category.Id, _selectedTransactionForCategory.Bank);
-
             ApplyCategoryToMatchingPreviewTransactions(
                 keyword,
                 category.Id,
                 category.Name);
+
+            await _categoryService.AddMerchantRuleAsync(
+                keyword,
+                category.Id,
+                _selectedTransactionForCategory.Bank);
         }
         else
         {
@@ -249,7 +303,5 @@ public partial class ImportPage : ContentPage
         }
 
         RefreshPreviewTransactions();
-
-        await CloseCategorySheetAsync();
     }
 }

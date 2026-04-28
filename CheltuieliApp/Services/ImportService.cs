@@ -227,4 +227,25 @@ public class ImportService
     }
 
 
+    // Tranzactii
+    public async Task<List<TransactionEntity>> GetAllTransactionsAsync()
+    {
+        return await _database.Db
+            .Table<TransactionEntity>()
+            .OrderByDescending(x => x.TransactionDate)
+            .ToListAsync();
+    }
+
+    // Oferim acces la tabele pentru partea de backup
+    public async Task<List<CategoryEntity>> GetAllCategoriesForBackupAsync()
+    {
+        return await _database.Db.Table<CategoryEntity>().ToListAsync();
+    }
+
+    public async Task<List<MerchantRuleEntity>> GetAllRulesForBackupAsync()
+    {
+        return await _database.Db.Table<MerchantRuleEntity>().ToListAsync();
+    }
+
+
 }

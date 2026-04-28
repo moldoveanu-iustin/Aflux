@@ -8,7 +8,7 @@
         <VerticalStackLayout Padding="14" Spacing="12">
 
             <VerticalStackLayout Spacing="0">
-                <Label Text="Mai mult"
+                <Label Text="Mai multe"
                        FontSize="18"
                        FontAttributes="Bold"
                        TextColor="#111827" />
@@ -73,6 +73,58 @@
                                    FontSize="24"
                                    TextColor="#9CA3AF"
                                    VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border BackgroundColor="#F8FAFC"
+        StrokeThickness="0"
+        Padding="14"
+        StrokeShape="RoundRectangle 18">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnHelpTapped" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Ajutor"
+                   FontSize="15"
+                   FontAttributes="Bold"
+                   TextColor="#111827" />
+                                <Label Text="Găsește răspunsuri la întrebările frecvente și ghiduri de utilizare"
+                   FontSize="12"
+                   TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+               Text="›"
+               FontSize="24"
+               TextColor="#9CA3AF"
+               VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border BackgroundColor="#F8FAFC"
+        StrokeThickness="0"
+        Padding="14"
+        StrokeShape="RoundRectangle 18">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBackupTapped" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Backup și restaurare"
+                   FontSize="15"
+                   FontAttributes="Bold"
+                   TextColor="#111827" />
+                                <Label Text="Exportă sau importă datele aplicației"
+                   FontSize="12"
+                   TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+               Text="›"
+               FontSize="24"
+               TextColor="#9CA3AF"
+               VerticalTextAlignment="Center" />
                         </Grid>
                     </Border>
 

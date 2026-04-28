@@ -2,20 +2,131 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CheltuieliApp.Pages.InfoPage"
-             Title="Info">
+             Title="Info aplicație"
+             BackgroundColor="#F5F7FB">
 
-    <VerticalStackLayout Padding="24" Spacing="12">
-        <Label Text="CheltuieliApp"
-               FontSize="28"
-               FontAttributes="Bold" />
+    <ScrollView>
+        <VerticalStackLayout Padding="14" Spacing="12">
 
-        <Label Text="Aplicație pentru importul extraselor bancare și analiza cheltuielilor." />
+            <HorizontalStackLayout Spacing="10">
 
-        <Label Text="Versiune: 1.0.0" />
+                <Border WidthRequest="36"
+                        HeightRequest="36"
+                        StrokeThickness="0"
+                        BackgroundColor="#EEF2FF"
+                        StrokeShape="RoundRectangle 18">
 
-        <Label Text="Autor: Iustin Eusebiu Moldoveanu" />
+                    <Label Text="‹"
+                           FontSize="24"
+                           TextColor="#3F51B5"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
 
-        <Label Text="Datele sunt salvate local pe dispozitiv, în SQLite." />
-    </VerticalStackLayout>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
 
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="Info aplicație"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Label Text="Detalii despre Aflux"
+                           FontSize="12"
+                           TextColor="#6B7280" />
+                </VerticalStackLayout>
+
+            </HorizontalStackLayout>
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="22"
+                    StrokeShape="RoundRectangle 28">
+
+                <VerticalStackLayout Spacing="16"
+                                     HorizontalOptions="Center">
+
+                    <Image Source="logo.png"
+                           WidthRequest="86"
+                           HeightRequest="86"
+                           Aspect="AspectFit" />
+
+                    <VerticalStackLayout Spacing="2"
+                                         HorizontalOptions="Center">
+                        <Label Text="Aflux"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#111827"
+                               HorizontalTextAlignment="Center" />
+
+                        <Label Text="Monitorizarea veniturilor și cheltuielilor"
+                               FontSize="13"
+                               TextColor="#6B7280"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <Border BackgroundColor="#EEF2FF"
+                            StrokeThickness="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 18">
+                        <Label Text="Versiune 1.0.0"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#3F51B5" />
+                    </Border>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="18"
+                    StrokeShape="RoundRectangle 28">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="Despre aplicație"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Label Text="Aflux a fost creată pentru monitorizarea mai ușoară a veniturilor și cheltuielilor, prin importul extraselor bancare și organizarea tranzacțiilor pe categorii."
+                           FontSize="14"
+                           TextColor="#374151" />
+
+                    <Label Text="Aplicația este realizată ca proiect de portofoliu personal și pentru utilizare în activități de zi cu zi."
+                           FontSize="14"
+                           TextColor="#374151" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="18"
+                    StrokeShape="RoundRectangle 28">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Text="Administrator"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Label Text="Iustin Eusebiu Moldoveanu"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Label Text="Email: moldoveanu.iustin04@gmail.ro"
+                           FontSize="13"
+                           TextColor="#6B7280" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
