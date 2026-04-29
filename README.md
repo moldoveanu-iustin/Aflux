@@ -11,22 +11,22 @@ Built specifically for Romanian users, the app currently supports statement impo
 
 ## 📸 Screenshots
 
-### Dashboard
-![Dashboard](Images/dashboard.png)
+> ⚠️ The data displayed in the screenshots is sample data and does not represent real personal information.
 
-### Transactions & Filtering
-![Transactions](Images/transactions.png)
+<p align="center">
+  <img src="Images/dashboard.jpg" width="240"/>
+  <img src="Images/transactions.jpg" width="240"/>
+</p>
 
-### Bank Statements
-![Statements](Images/statements.png)
+<p align="center">
+  <img src="Images/statements.jpg" width="240"/>
+  <img src="Images/backup.jpg" width="240"/>
+</p>
 
-### Backup & Restore
-![Backup](Images/backup.png)
-
-### Help & Supported Banks
-![Help](Images/help.png)
-
----
+<p align="center">
+  <img src="Images/help.jpg" width="240"/>
+  <img src="Images/info.jpg" width="240"/>
+</p>
 
 ## 📖 About the Project
 
