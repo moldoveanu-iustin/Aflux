@@ -1,5 +1,8 @@
-# Aflux 💰
+<p align="left">
+  <img src="CheltuieliApp/Resources/Images/logo_transparent.png" width="120"/>
+</p>
 
+# Aflux 💰
 Aflux is a mobile application designed for tracking personal finances by importing and analyzing bank statements.
 
 Built specifically for Romanian users, the app currently supports statement imports from:
