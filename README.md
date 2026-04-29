@@ -1,4 +1,4 @@
-<p align="left">
+<p align="center">
   <img src="CheltuieliApp/Resources/Images/logo_transparent.png" width="120"/>
 </p>
 
